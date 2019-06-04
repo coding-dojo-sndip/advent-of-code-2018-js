@@ -11,3 +11,15 @@ describe('Day 01, part 1', () => {
         expect(answer).toBe(592)
     })
 })
+
+describe('Day 01, part 2', () => {
+    test('the sum of all numbers is 3', () => {
+        expect(part2('src/test/resources/01-0.txt')).toBe(2)
+    })
+    
+    test('the answer to part 2 is 241', () => {
+        const answer = part2('src/main/resources/01.txt')
+        console.log(`Day01.2 : ${answer}`)
+        expect(answer).toBe(241)
+    })
+})

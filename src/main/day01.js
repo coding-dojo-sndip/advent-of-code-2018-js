@@ -8,7 +8,18 @@ function part1(input) {
 }
 
 function part2(input) {
-    return 0
+    const frequencies = new Set()
+    const changes = fs.readFileSync(input, 'utf-8')
+        .split('\n')
+        .map(n => parseInt(n))
+    let frequency = 0
+    let index = 0
+    while(!frequencies.has(frequency)) {
+        frequencies.add(frequency)
+        frequency += changes[index % changes.length]
+        index ++
+    }
+    return frequency
 }
 
 export { part1, part2 }
