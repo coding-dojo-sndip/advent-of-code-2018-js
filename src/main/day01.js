@@ -1,17 +1,10 @@
-import fs from 'fs'
+import { arrayOfInts } from "./days";
 
-function part1(input) {
-    return fs.readFileSync(input, 'utf-8')
-        .split('\n')
-        .map(n => parseInt(n))
-        .reduce((a, b) => a + b)
-}
+export const part1 = input => arrayOfInts(input).reduce((a, b) => a + b)
 
-function part2(input) {
+export const part2 = input => {
     const frequencies = new Set()
-    const changes = fs.readFileSync(input, 'utf-8')
-        .split('\n')
-        .map(n => parseInt(n))
+    const changes = arrayOfInts(input)
     let frequency = 0
     let index = 0
     while(!frequencies.has(frequency)) {
@@ -21,5 +14,3 @@ function part2(input) {
     }
     return frequency
 }
-
-export { part1, part2 }
