@@ -1,7 +1,7 @@
 import {part1, part2} from '../main/day01'
 
 describe('Day 01, part 1', () => {
-    test('the sum of all numbers is 3', () => {
+    test('the resulting frequency is 3', () => {
         expect(part1('src/test/resources/01-0.txt')).toBe(3)
     })
     
@@ -13,7 +13,7 @@ describe('Day 01, part 1', () => {
 })
 
 describe('Day 01, part 2', () => {
-    test('the sum of all numbers is 3', () => {
+    test('the first frequency the device reaches twice is 2', () => {
         expect(part2('src/test/resources/01-0.txt')).toBe(2)
     })
     
