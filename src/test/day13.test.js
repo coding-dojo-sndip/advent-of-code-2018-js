@@ -6,7 +6,7 @@ describe('Day 13, part 1', () => {
 	})
 
 	test('the location of the first crash is 113, 136', () => {
-		const answer = part2('src/main/resources/13.txt')
+		const answer = part1('src/main/resources/13.txt')
 		console.log(`Day13.2 : ${answer}`)
 		expect(answer).toBe('113,136')
 	})
