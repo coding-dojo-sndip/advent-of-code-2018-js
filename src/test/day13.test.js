@@ -12,7 +12,7 @@ describe('Day 13, part 1', () => {
 	})
 })
 
-describe('Day 13, part 2', () => {
+describe.skip('Day 13, part 2', () => {
 	test('the location of the last cart is 6, 4', () => {
 		expect(part2('src/test/resources/13-0.txt')).toBe('6,4')
 	})

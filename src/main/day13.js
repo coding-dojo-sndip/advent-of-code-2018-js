@@ -12,7 +12,6 @@ class Wagon {
 
 	move(track) {
 		this.point = this.nextPoint()
-		console.log(track.length, this.point)
 		switch (track[this.point.y][this.point.x]) {
 		case '/':
 			switch (this.way) {
@@ -94,30 +93,34 @@ class Wagon {
 	nextPoint() {
 		switch (this.way) {
 		case '^':
-			return new Point(this.x, this.y - 1)
+			return new Point(this.point.x, this.point.y - 1)
 		case 'v':
-			return new Point(this.x, this.y + 1)
+			return new Point(this.point.x, this.point.y + 1)
 		case '<':
-			return new Point(this.x - 1, this.y)
+			return new Point(this.point.x - 1, this.point.y)
 		case '>':
-			return new Point(this.x + 1, this.y)
+			return new Point(this.point.x + 1, this.point.y)
 		}
 	}
 
-	collision(other) {
-		return this.point.x === other.point.x && this.point.y === other.point.y && this.way !== other.way
+	collideWith(other) {
+		return this.way !== other.way && this.point.x === other.point.x && this.point.y === other.point.y
+	}
+
+	collideWithAny(wagons) {
+		return wagons.some(other => this.collideWith(other))
 	}
 }
 
 export const part1 = input => {
 	const { track, wagons } = readInput(input)
-	let collision = null
-	while (!collision) {
+	for (;;) {
 		wagons.sort(Wagon.compare)
-		wagons.forEach(wagon => wagon.move(track))
-		collision = collisionPoint(wagons)
+		for (const wagon of wagons) {
+			wagon.move(track)
+			if (wagon.collideWithAny(wagons)) return `${wagon.point.x},${wagon.point.y}`
+		}
 	}
-	return `${collision.x},${collision.y}`
 }
 
 export const part2 = input => '0,0'
@@ -140,13 +143,4 @@ const readInput = input => {
 		}
 	}
 	return { track, wagons }
-}
-
-const collisionPoint = wagons => {
-	wagons.forEach(a => {
-		wagons.forEach(b => {
-			if (a.collision(b)) return a.point
-		})
-	})
-	return null
 }
