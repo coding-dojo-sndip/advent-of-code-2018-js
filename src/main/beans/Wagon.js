@@ -7,6 +7,7 @@ export class Wagon {
 		this.point = new Point(x, y)
 		this.way = way
 		this.turnIndex = 0
+		this.crashed = false
 	}
 
 	nextTurn() {
@@ -27,7 +28,7 @@ export class Wagon {
 	}
 
 	collideWith(other) {
-		return this.way !== other.way && this.point.x === other.point.x && this.point.y === other.point.y
+		return this.way !== other.way && this.point.x === other.point.x && this.point.y === other.point.y && other.crashed === false
 	}
 
 	collideWithAny(wagons) {
