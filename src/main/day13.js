@@ -14,7 +14,25 @@ export const part1 = input => {
     }
 }
 
-export const part2 = input => '0,0'
+export const part2 = input => {
+    let { track, wagons } = readInput(input)
+    while (wagons.length > 1) {
+        wagons.sort(Wagon.compare)
+        for (const wagon of wagons) {
+            if (wagon.moving) {
+                wagon.move(track)
+                const other = wagon.collideWithAny(wagons)
+                if (other) {
+                    wagon.moving = false
+                    other.moving = false
+                }
+            }
+        }
+        wagons = wagons.filter(wagon => wagon.moving)
+    }
+    const lastWagon = wagons[0]
+    return `${lastWagon.point.x},${lastWagon.point.y}`
+}
 
 const readInput = input => {
     const track = arrayOfLines(input).map(line => [...line])
