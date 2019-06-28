@@ -16,15 +16,31 @@ export const part1 = numberOfRecipes => {
 	const recipes = [3, 7]
 	const elves = [new Elf(0), new Elf(1)]
 	while (recipes.length < numberOfRecipes + 10) {
-		recipes.push(...nextRecipes(elves, recipes))
+		recipes.push(...createNewRecipes(elves, recipes))
 		elves.forEach(elf => elf.moveToNextPosition(recipes))
 	}
 	return recipes.slice(numberOfRecipes, numberOfRecipes + 10).join('')
 }
 
-export const part2 = input => input
+export const part2 = scoreSequence => {
+	const scoreSize = scoreSequence.length
+	const recipes = [3, 7]
+	const elves = [new Elf(0), new Elf(1)]
+	for (;;) {
+		const newRecipes = createNewRecipes(elves, recipes)
+		recipes.push(...newRecipes)
+		elves.forEach(elf => elf.moveToNextPosition(recipes))
+		if (recipes.length > scoreSize) {
+			for (let i = 0; i < newRecipes.length; i++) {
+				const end = recipes.length - i
+				const start = end - scoreSize
+				if (recipes.slice(start, end).join('') === scoreSequence) return start
+			}
+		}
+	}
+}
 
-const nextRecipes = (elves, recipes) =>
+const createNewRecipes = (elves, recipes) =>
 	elves
 		.map(elf => elf.currentRecipe(recipes))
 		.reduce((a, b) => a + b)
