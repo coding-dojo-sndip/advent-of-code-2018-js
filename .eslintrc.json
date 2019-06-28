@@ -18,6 +18,6 @@
         "linebreak-style": ["error", "windows"],
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
-        "no-console": "off"
+        "no-console": "warn"
     }
 }
