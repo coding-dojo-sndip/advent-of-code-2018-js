@@ -14,22 +14,10 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ],
-        "no-console": "off"
+        "indent": ["error", "tab"],
+        "linebreak-style": ["error", "windows"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "never"],
+        "no-console": "warn"
     }
 }

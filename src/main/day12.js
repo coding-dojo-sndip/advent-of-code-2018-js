@@ -8,7 +8,7 @@ export const part1 = input => {
 
 export const part2 = input => {
 	const firstStableIndex = 111
-	const { state, leftPadding } = computeFinalState(input, firstStableIndex) 
+	const { state, leftPadding } = computeFinalState(input, firstStableIndex)
 	const baseScore = score(state, leftPadding)
 	const numberOfPlants = [...state].filter(c => c === '#').length
 	return baseScore + (50000000000 - firstStableIndex) * numberOfPlants
@@ -33,23 +33,22 @@ const computeFinalState = (input, numberOfGenerations) => {
 	return { state, leftPadding }
 }
 
-const readInitialState = lines => lines
-	.shift()
-	.replace('initial state: ', '')
-	.replace('\r', '')
+const readInitialState = lines =>
+	lines
+		.shift()
+		.replace('initial state: ', '')
+		.replace('\r', '')
 
-const readRules = lines => lines
-	.filter(line => line.endsWith('#'))
-	.map(line => line.substring(0, 5))
+const readRules = lines => lines.filter(line => line.endsWith('#')).map(line => line.substring(0, 5))
 
-const computeNextState = (rules, state, index) => rules.includes(state.substring(index - 2, index + 3)) ? '#' : '.'
+const computeNextState = (rules, state, index) => (rules.includes(state.substring(index - 2, index + 3)) ? '#' : '.')
 
 const padLeftCount = state => {
 	let pad = 4
 	let index = 0
-	while(state.charAt(index) === '.') {
-		index ++
-		pad --
+	while (state.charAt(index) === '.') {
+		index++
+		pad--
 	}
 	return pad
 }
@@ -57,9 +56,9 @@ const padLeftCount = state => {
 const padRightCount = state => {
 	let pad = 4
 	let index = 0
-	while(state.charAt(state.length - 1 - index) === '.') {
-		index ++
-		pad --
+	while (state.charAt(state.length - 1 - index) === '.') {
+		index++
+		pad--
 	}
 	return pad
 }
@@ -73,10 +72,8 @@ const padState = (state, padLeftCount, padRightCount) => {
 
 const score = (state, leftPadding) => {
 	let score = 0
-	for(let index = 0; index < state.length; index ++) {
+	for (let index = 0; index < state.length; index++) {
 		score += state[index] === '#' ? index - leftPadding : 0
 	}
 	return score
 }
-
-
