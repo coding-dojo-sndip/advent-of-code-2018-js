@@ -1,52 +1,52 @@
 import { arrayOfLines } from './days'
-import { Wagon } from './beans/Wagon'
+import { Cart } from './beans/Cart'
 
-const ways = ['^', 'v', '<', '>']
+const directions = ['^', 'v', '<', '>']
 
 export const part1 = input => {
 	const track = readTrack(input)
-	const wagons = loadWagons(track)
+	const carts = loadCarts(track)
 	for (;;) {
-		wagons.sort(Wagon.compare)
-		for (const wagon of wagons) {
-			wagon.move(track)
-			if (wagon.collideWithAny(wagons)) return `${wagon.point.x},${wagon.point.y}`
+		carts.sort(Cart.compare)
+		for (const cart of carts) {
+			cart.move(track)
+			if (cart.collideWithAny(carts)) return `${cart.position.re},${cart.position.im}`
 		}
 	}
 }
 
 export const part2 = input => {
 	const track = readTrack(input)
-	let wagons = loadWagons(track)
-	while (wagons.length > 1) {
-		wagons.sort(Wagon.compare)
-		for (const wagon of wagons) {
-			if (wagon.moving) {
-				wagon.move(track)
-				const other = wagon.collideWithAny(wagons)
+	let carts = loadCarts(track)
+	while (carts.length > 1) {
+		carts.sort(Cart.compare)
+		for (const cart of carts) {
+			if (cart.moving) {
+				cart.move(track)
+				const other = cart.collideWithAny(carts)
 				if (other) {
-					wagon.moving = false
+					cart.moving = false
 					other.moving = false
 				}
 			}
 		}
-		wagons = wagons.filter(wagon => wagon.moving)
+		carts = carts.filter(cart => cart.moving)
 	}
-	const lastWagon = wagons[0]
-	return `${lastWagon.point.x},${lastWagon.point.y}`
+	const lastCart = carts[0]
+	return `${lastCart.position.re},${lastCart.position.im}`
 }
 
 const readTrack = input => arrayOfLines(input).map(line => [...line])
 
-const loadWagons = track => {
-	const wagons = []
+const loadCarts = track => {
+	const carts = []
 	for (let i = 0; i < track.length; i++) {
 		for (let j = 0; j < track[0].length; j++) {
-			const way = track[i][j]
-			if (ways.includes(way)) {
-				wagons.push(new Wagon(j, i, way))
+			const direction = track[i][j]
+			if (directions.includes(direction)) {
+				carts.push(new Cart(j, i, direction))
 			}
 		}
 	}
-	return wagons
+	return carts
 }
