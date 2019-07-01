@@ -1,7 +1,5 @@
 import { arrayOfLines } from './days'
-import { Cart } from './beans/Cart'
-
-const directions = ['^', 'v', '<', '>']
+import { Cart, directions } from './beans/Cart'
 
 export const part1 = input => {
 	const track = readTrack(input)
@@ -43,7 +41,7 @@ const loadCarts = track => {
 	for (let i = 0; i < track.length; i++) {
 		for (let j = 0; j < track[0].length; j++) {
 			const direction = track[i][j]
-			if (directions.includes(direction)) {
+			if (directions.keys().includes(direction)) {
 				carts.push(new Cart(j, i, direction))
 			}
 		}

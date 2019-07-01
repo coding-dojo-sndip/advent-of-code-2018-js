@@ -2,17 +2,19 @@ import { complex, multiply, add, equal } from 'mathjs'
 
 const turns = ['LEFT', 'STRAIGHT', 'RIGHT']
 
+export const directions = {
+	'<': complex('-1'),
+	'>': complex('+1'),
+	'^': complex('-i'),
+	'v': complex('+i'),
+}
+
 export class Cart {
 	constructor(x, y, direction) {
 		this.turnIndex = 0
 		this.moving = true
 		this.position = complex(x, y)
-		this.direction = {
-			'<': complex('-1'),
-			'>': complex('+1'),
-			'^': complex('-i'),
-			'v': complex('+i'),
-		}[direction]
+		this.direction = directions[direction]
 	}
 
 	move(track) {
