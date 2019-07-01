@@ -7,18 +7,12 @@ export class Cart {
 		this.turnIndex = 0
 		this.moving = true
 		this.position = complex(x, y)
-		this.direction = (direction => {
-			switch (direction) {
-			case '<':
-				return complex('-1')
-			case '>':
-				return complex('+1')
-			case '^':
-				return complex('-i')
-			case 'v':
-				return complex('+i')
-			}
-		})(direction)
+		this.direction = {
+			'<': complex('-1'),
+			'>': complex('+1'),
+			'^': complex('-i'),
+			'v': complex('+i'),
+		}[direction]
 	}
 
 	move(track) {
