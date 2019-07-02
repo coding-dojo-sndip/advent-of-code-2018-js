@@ -8,7 +8,7 @@ export const part1 = input => {
 		carts.sort(Cart.compare)
 		for (const cart of carts) {
 			cart.move(track)
-			if (cart.collideWithAny(carts)) return `${cart.position.re},${cart.position.im}`
+			if (cart.collideWithAny(carts)) return cart.toString()
 		}
 	}
 }
@@ -31,7 +31,7 @@ export const part2 = input => {
 		carts = carts.filter(cart => cart.moving)
 	}
 	const lastCart = carts[0]
-	return `${lastCart.position.re},${lastCart.position.im}`
+	return lastCart.toString()
 }
 
 const readTrack = input => arrayOfLines(input).map(line => [...line])
@@ -41,7 +41,7 @@ const loadCarts = track => {
 	for (let i = 0; i < track.length; i++) {
 		for (let j = 0; j < track[0].length; j++) {
 			const direction = track[i][j]
-			if (directions.keys().includes(direction)) {
+			if (Object.keys(directions).includes(direction)) {
 				carts.push(new Cart(j, i, direction))
 			}
 		}

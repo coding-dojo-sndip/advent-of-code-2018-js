@@ -56,6 +56,10 @@ export class Cart {
 		return carts.find(other => this.collideWith(other))
 	}
 
+	toString() {
+		return `${this.position.re},${this.position.im}`
+	}
+
 	static compare(a, b) {
 		return a.position.im === b.position.im ? a.position.re - b.position.re : a.position.im - b.position.im
 	}
