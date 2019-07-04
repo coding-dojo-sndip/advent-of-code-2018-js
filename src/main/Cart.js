@@ -6,9 +6,9 @@ const directions = {
 	'v': complex('+i'),
 }
 export class Cart {
-	constructor(direction, real, imaginar) {
+	constructor(direction, real, imaginary) {
 		this.direction = directions[direction]
-		this.coord = complex(real, imaginar)
+		this.coord = complex(real, imaginary)
 		this.state = 'left'
 	}
 	forward() {
