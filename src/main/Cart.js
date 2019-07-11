@@ -1,27 +1,33 @@
 import { add, multiply, complex } from 'mathjs'
+
 const directions = {
 	'<': complex('-1'),
 	'>': complex('+1'),
 	'^': complex('-i'),
 	'v': complex('+i'),
 }
+
 export class Cart {
-	constructor(direction, real, imaginary) {
+	constructor(direction, x, y) {
 		this.direction = directions[direction]
-		this.coord = complex(real, imaginary)
+		this.position = complex(x, y)
 		this.state = 'left'
 	}
+
 	forward() {
-		this.coord = add(this.coord, this.direction)
+		this.position = add(this.position, this.direction)
 	}
+
 	turnLeft() {
 		this.direction = multiply(this.direction, complex('-i'))
 	}
+
 	turnRight() {
 		this.direction = multiply(this.direction, complex('+i'))
 	}
+
 	turn(track) {
-		switch (track[this.coord.im][this.coord.re]) {
+		switch (track[this.position.im][this.position.re]) {
 		case '/':
 			this.direction.re === 0 ? this.turnRight() : this.turnLeft()
 			break
