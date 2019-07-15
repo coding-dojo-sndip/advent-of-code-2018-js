@@ -20,7 +20,7 @@ const computeFinalState = (input, numberOfGenerations) => {
 	const rules = readRules(lines)
 	let leftPadding = 0
 	for (let n = 0; n < numberOfGenerations; n++) {
-		let nextState = []
+		const nextState = []
 		const padLeft = padLeftCount(state)
 		const padRight = padRightCount(state)
 		const paddedState = padState(state, padLeft, padRight)

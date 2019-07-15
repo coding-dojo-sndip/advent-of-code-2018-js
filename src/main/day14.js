@@ -31,7 +31,7 @@ export const part2 = scoreSequence => {
 		recipes.push(...newRecipes)
 		elves.forEach(elf => elf.moveToNextPosition(recipes))
 		if (recipes.length > scoreSize) {
-			for (let i = 0; i < newRecipes.length; i++) {
+			for (let i = 0; i < newRecipes.length; i += 1) {
 				const end = recipes.length - i
 				const start = end - scoreSize
 				if (recipes.slice(start, end).join('') === scoreSequence) return start

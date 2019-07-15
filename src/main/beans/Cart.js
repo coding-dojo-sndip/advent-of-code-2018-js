@@ -20,23 +20,23 @@ export class Cart {
 	move(track) {
 		this.position = add(this.position, this.direction)
 		switch (track[this.position.im][this.position.re]) {
-		case '/':
-			this.direction.re === 0 ? this.turnRight() : this.turnLeft()
-			break
-		case '\\':
-			this.direction.re === 0 ? this.turnLeft() : this.turnRight()
-			break
-		case '+':
-			switch (turns[this.turnIndex]) {
-			case 'LEFT':
-				this.turnLeft()
+			case '/':
+				this.direction.re === 0 ? this.turnRight() : this.turnLeft()
 				break
-			case 'RIGHT':
-				this.turnRight()
+			case '\\':
+				this.direction.re === 0 ? this.turnLeft() : this.turnRight()
 				break
-			}
-			this.turnIndex = (this.turnIndex + 1) % turns.length
-			break
+			case '+':
+				switch (turns[this.turnIndex]) {
+					case 'LEFT':
+						this.turnLeft()
+						break
+					case 'RIGHT':
+						this.turnRight()
+						break
+				}
+				this.turnIndex = (this.turnIndex + 1) % turns.length
+				break
 		}
 	}
 
