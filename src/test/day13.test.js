@@ -4,7 +4,7 @@ describe('Day 13, part 1', () => {
 	test('the location of the first crash is 7, 3', () => {
 		expect(part1('src/test/resources/13-0.txt')).toBe('7,3')
 	})
-	test.skip('the location of the first crash is 28, 107', () => {
+	test('the location of the first crash is 28, 107', () => {
 		expect(part1('src/main/resources/13.txt')).toBe('28,107')
 	})
 })

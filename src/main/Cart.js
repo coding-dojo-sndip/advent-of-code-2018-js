@@ -1,4 +1,4 @@
-import { add, multiply, complex } from 'mathjs'
+import { add, multiply, complex, equal } from 'mathjs'
 
 const directions = {
 	'<': complex('-1'),
@@ -50,4 +50,17 @@ export class Cart {
 			}
 		}
 	}
+
+	percut(cart) {
+		return equal(this.position, cart.position)
+	}
+
+	percutAny(carts) {
+		return carts.filter(cart => cart !== this).some(cart => this.percut(cart))
+	}
+
+	compareTo(cart) {
+		return this.direction.im === cart.direction.im ? this.direction.re - cart.direction.re : this.direction.im - cart.direction.im
+	}
+	
 }
