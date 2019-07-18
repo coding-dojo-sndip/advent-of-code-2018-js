@@ -1,36 +1,39 @@
-import { arrayOfLines } from './days'
+import { takeWhile, takeRightWhile } from 'lodash'
+import { arrayOfLines, deleteFile, appendLine } from './days'
+import Pot from './beans/Pot'
 
 export const part1 = input => {
-	const numberOfGenerations = 20
-	const { state, leftPadding } = computeFinalState(input, numberOfGenerations)
-	return score(state, leftPadding)
+	const pots = potsAfterGenerations(input, 20)
+	return score(pots)
 }
 
 export const part2 = input => {
-	const firstStableIndex = 111
-	const { state, leftPadding } = computeFinalState(input, firstStableIndex)
-	const baseScore = score(state, leftPadding)
-	const numberOfPlants = [...state].filter(c => c === '#').length
-	return baseScore + (50000000000 - firstStableIndex) * numberOfPlants
+	const base = 195
+	const pots = potsAfterGenerations(input, base)
+	const baseScore = score(pots)
+	const numberOfPlants = countPlants(pots)
+	return baseScore + (50000000000 - base) * numberOfPlants
 }
 
-const computeFinalState = (input, numberOfGenerations) => {
+export const logPart2 = input => {
+	deleteFile('12.log')
+	potsAfterGenerations(input, 300, '12.log')
+}
+
+const potsAfterGenerations = (input, numberOfGenerations, logFile) => {
 	const lines = arrayOfLines(input)
-	let state = readInitialState(lines)
+	const initialState = readInitialState(lines)
 	const rules = readRules(lines)
-	let leftPadding = 0
-	for (let n = 0; n < numberOfGenerations; n++) {
-		const nextState = []
-		const padLeft = padLeftCount(state)
-		const padRight = padRightCount(state)
-		const paddedState = padState(state, padLeft, padRight)
-		leftPadding += padLeft - 2
-		for (let i = 2; i < paddedState.length - 2; i++) {
-			nextState.push(computeNextState(rules, paddedState, i))
+	const pots = createPots(initialState)
+	for (let gen = 0; gen < numberOfGenerations; gen++) {
+		addEmptyPots(pots)
+		for (let i = 2; i < pots.length - 2; i++) {
+			pots[i].computeNextState(rules, pots)
 		}
-		state = nextState.join('')
+		pots.forEach(pot => pot.changeState())
+		if (logFile) appendLine(logFile, pots.map(pot => pot.state).join(''))
 	}
-	return { state, leftPadding }
+	return pots
 }
 
 const readInitialState = lines =>
@@ -41,39 +44,39 @@ const readInitialState = lines =>
 
 const readRules = lines => lines.filter(line => line.endsWith('#')).map(line => line.substring(0, 5))
 
-const computeNextState = (rules, state, index) => (rules.includes(state.substring(index - 2, index + 3)) ? '#' : '.')
+const createPots = initialState => [...initialState].map((plant, index) => new Pot(index, plant))
 
-const padLeftCount = state => {
-	let pad = 4
-	let index = 0
-	while (state.charAt(index) === '.') {
-		index++
-		pad--
+const score = pots =>
+	pots
+		.filter(pot => !pot.isEmpty())
+		.map(pot => pot.index)
+		.reduce((a, b) => a + b, 0)
+
+const countPlants = pots => pots.filter(pot => !pot.isEmpty()).length
+
+const addEmptyPots = pots => {
+	const numberOfLeadingEmptyPots = takeWhile(pots, pot => pot.isEmpty()).length
+	if (numberOfLeadingEmptyPots < 3) {
+		for (let i = 0; i < 3 - numberOfLeadingEmptyPots; i++) {
+			addLeadingPot(pots)
+		}
 	}
-	return pad
+	const numberOfTrailingEmptyPots = takeRightWhile(pots, pot => pot.isEmpty()).length
+	if (numberOfTrailingEmptyPots < 3) {
+		for (let i = 0; i < 3 - numberOfTrailingEmptyPots; i++) {
+			addTrailingPot(pots)
+		}
+	}
 }
 
-const padRightCount = state => {
-	let pad = 4
-	let index = 0
-	while (state.charAt(state.length - 1 - index) === '.') {
-		index++
-		pad--
-	}
-	return pad
+const addLeadingPot = pots => {
+	const firstPot = pots[0]
+	const leadingPot = new Pot(firstPot.index - 1, '.')
+	pots.unshift(leadingPot)
 }
 
-const padState = (state, padLeftCount, padRightCount) => {
-	let paddedState = state
-	paddedState = padLeftCount <= 0 ? paddedState.substring(-padLeftCount) : paddedState.padStart(paddedState.length + padLeftCount, '.')
-	paddedState = padRightCount <= 0 ? paddedState.substring(0, paddedState.length + padRightCount) : paddedState.padEnd(paddedState.length + padRightCount, '.')
-	return paddedState
-}
-
-const score = (state, leftPadding) => {
-	let score = 0
-	for (let index = 0; index < state.length; index++) {
-		score += state[index] === '#' ? index - leftPadding : 0
-	}
-	return score
+const addTrailingPot = pots => {
+	const lastPot = pots[pots.length - 1]
+	const trailingPot = new Pot(lastPot.index + 1, '.')
+	pots.push(trailingPot)
 }
