@@ -1,50 +1,57 @@
+import { orderBy } from 'lodash'
 import { arrayOfLines } from './days'
-import { Cart, directions } from './beans/Cart'
+import Cart from './beans/Cart'
+
+const readTrack = input => arrayOfLines(input).map(line => [...line])
+const directions = ['<', '>', '^', 'v']
+
+const createCarts = track => {
+	const carts = []
+	for (let i = 0; i < track.length; i++) {
+		for (let j = 0; j < track[i].length; j++) {
+			if (directions.includes(track[i][j])) {
+				carts.push(new Cart(track[i][j], j, i))
+			}
+		}
+	}
+	return carts
+}
+
+const sort = carts => orderBy(carts, ['position.im', 'position.re'])
 
 export const part1 = input => {
 	const track = readTrack(input)
-	const carts = loadCarts(track)
+	let carts = createCarts(track)
 	for (;;) {
-		carts.sort(Cart.compare)
+		carts = sort(carts)
 		for (const cart of carts) {
-			cart.move(track)
-			if (cart.collideWithAny(carts)) return cart.toString()
+			cart.forward()
+			cart.turn(track)
+			if (cart.collideWithAny(carts)) {
+				return `${cart.position.re},${cart.position.im}`
+			}
 		}
 	}
 }
 
 export const part2 = input => {
 	const track = readTrack(input)
-	let carts = loadCarts(track)
+	let carts = createCarts(track)
 	while (carts.length > 1) {
-		carts.sort(Cart.compare)
+		carts = sort(carts)
 		for (const cart of carts) {
-			if (cart.moving) {
-				cart.move(track)
+			if (!cart.isBroken) {
+				cart.forward()
+				cart.turn(track)
 				const other = cart.collideWithAny(carts)
 				if (other) {
-					cart.moving = false
-					other.moving = false
+					other.isBroken = true
+					cart.isBroken = true
 				}
 			}
 		}
-		carts = carts.filter(cart => cart.moving)
+		carts = carts.filter(c => !c.isBroken)
 	}
 	const lastCart = carts[0]
-	return lastCart.toString()
-}
-
-const readTrack = input => arrayOfLines(input).map(line => [...line])
-
-const loadCarts = track => {
-	const carts = []
-	for (let i = 0; i < track.length; i++) {
-		for (let j = 0; j < track[0].length; j++) {
-			const direction = track[i][j]
-			if (Object.keys(directions).includes(direction)) {
-				carts.push(new Cart(j, i, direction))
-			}
-		}
-	}
-	return carts
+	return `${lastCart.position.re},${lastCart.position.im}`
 }
