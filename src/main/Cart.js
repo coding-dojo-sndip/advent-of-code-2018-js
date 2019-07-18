@@ -12,6 +12,7 @@ export class Cart {
 		this.direction = directions[direction]
 		this.position = complex(x, y)
 		this.state = 'left'
+		this.isBroken= false
 	}
 
 	forward() {
@@ -52,11 +53,12 @@ export class Cart {
 	}
 
 	percut(cart) {
+
 		return equal(this.position, cart.position)
 	}
 
 	percutAny(carts) {
-		return carts.filter(cart => cart !== this).some(cart => this.percut(cart))
+		return carts.filter(cart => cart !== this && !cart.isBroken).find(cart => this.percut(cart))
 	}
 
 	compareTo(cart) {

@@ -34,4 +34,25 @@ export const part1 = input => {
 	}
 }
 
-export const part2 = input => input
+export const part2 = input => {
+	const track = readTrack(input)
+	let carts = createCarts(track)
+	while(carts.length >1 ) {
+		carts = sort(carts)
+		for (let cart of carts) {
+			if(!cart.isBroken){
+				cart.forward()
+				cart.turn(track)
+				const cartPercuted = cart.percutAny(carts)
+				if (cartPercuted) {
+					cartPercuted.isBroken=true
+					cart.isBroken=true
+				
+				}
+			}
+		}
+		carts = carts.filter(c => !c.isBroken)
+	}
+	const lastCart=carts[0]
+	return `${lastCart.position.re},${lastCart.position.im}`
+}
