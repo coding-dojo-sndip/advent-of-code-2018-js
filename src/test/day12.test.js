@@ -10,10 +10,6 @@ describe('Day 12, part 1', () => {
 })
 
 describe('Day 12, part 2', () => {
-	test('write log to find answer to part2', () => {
-		logPart2('src/main/resources/12.txt')
-	})
-	test('the answer to part 2 is 2650000001362', () => {
 		expect(part2('src/main/resources/12.txt')).toBe(2650000001362)
 	})
 })
