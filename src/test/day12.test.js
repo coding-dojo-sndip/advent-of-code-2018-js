@@ -1,4 +1,4 @@
-import { part1, part2, logPart2 } from '../main/day12'
+import { part1, part2 } from '../main/day12'
 
 describe('Day 12, part 1', () => {
 	test('after 20 generations, the sum of the numbers of all pots which contain a plant is 325', () => {
