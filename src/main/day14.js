@@ -1,22 +1,29 @@
+import CircularLinkedList from 'circular-linked-list'
+
 class Elf {
-	constructor(id) {
-		this.position = id
+	constructor(recipe) {
+		this.recipe = recipe
 	}
 
-	currentRecipe(recipes) {
-		return recipes[this.position]
+	currentRecipe() {
+		return this.recipe.value
 	}
 
-	moveToNextPosition(recipes) {
-		this.position = (this.position + 1 + this.currentRecipe(recipes)) % recipes.length
+	moveToNextPosition() {
+		let nextRecipe = this.recipe
+		for (let i = 0; i <= this.recipe.value; i++) {
+			nextRecipe = nextRecipe.next
+		}
+		this.recipe = nextRecipe
 	}
 }
 
 export const part1 = numberOfRecipes => {
-	const recipes = [3, 7]
-	const elves = [new Elf(0), new Elf(1)]
+	const recipes = new CircularLinkedList()
+	recipes.append(3, 7)
+	const elves = [new Elf(recipes.node(0)), new Elf(recipes.node(1))]
 	while (recipes.length < numberOfRecipes + 10) {
-		recipes.push(...createNewRecipes(elves, recipes))
+		recipes.append(...createNewRecipes(elves, recipes))
 		elves.forEach(elf => elf.moveToNextPosition(recipes))
 	}
 	return recipes.slice(numberOfRecipes, numberOfRecipes + 10).join('')
