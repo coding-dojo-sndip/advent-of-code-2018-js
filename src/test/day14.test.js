@@ -18,7 +18,7 @@ describe('Day 14, part 1', () => {
 	})
 })
 
-describe('Day 14, part 2', () => {
+describe.skip('Day 14, part 2', () => {
 	test('51589 first appears after 9 recipes', () => {
 		expect(part2('51589')).toBe(9)
 	})

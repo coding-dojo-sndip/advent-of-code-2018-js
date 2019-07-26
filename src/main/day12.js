@@ -31,13 +31,9 @@ const addEmptyPots = pots => {
 	}
 }
 
-const addEmptyPotLeft = pots => {
-	pots.unshift(new Pot(pots[0].index - 1, '.'))
-}
+const addEmptyPotLeft = pots => pots.unshift(new Pot(pots[0].index - 1, '.'))
 
-const addEmptyPotRight = pots => {
-	pots.push(new Pot(pots[pots.length - 1].index + 1, '.'))
-}
+const addEmptyPotRight = pots => pots.push(new Pot(pots[pots.length - 1].index + 1, '.'))
 
 const applyRules = (pots, rules, index) => {
 	const current = pots
