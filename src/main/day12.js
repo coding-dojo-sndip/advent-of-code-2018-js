@@ -1,22 +1,33 @@
 import { arrayOfLines } from './days'
 import Pot from './beans/Pot'
 
-export const part1 = input => {
+const potsAfterGenerations = (input, numberOfGenerations) => {
 	const lines = arrayOfLines(input)
 	const initialState = readInitialState(lines)
 	const rules = readRules(lines)
 	const pots = createPots(initialState)
-	for (let generation = 0; generation < 20; generation++) {
+	for (let generation = 0; generation < numberOfGenerations; generation++) {
 		addEmptyPots(pots)
 		for (let index = 2; index < pots.length - 2; index++) {
 			applyRules(pots, rules, index)
 		}
 		pots.forEach(pot => pot.update())
 	}
+	return pots
+}
+
+export const part1 = input => {
+	const pots = potsAfterGenerations(input, 20)
 	return score(pots)
 }
 
-export const part2 = input => input
+export const part2 = input => {
+	const base = 300
+	const pots = potsAfterGenerations(input, base)
+	const numberOfPlants = countPlants(pots)
+	const baseScore = score(pots)
+	return baseScore + (50000000000 - base) * numberOfPlants
+}
 
 const readInitialState = lines => lines[0].replace('initial state: ', '')
 
@@ -49,3 +60,5 @@ const score = pots =>
 		.filter(pot => pot.state === '#')
 		.map(pot => pot.index)
 		.reduce((a, b) => a + b)
+
+const countPlants = pots => pots.filter(pot => pot.state === '#').length
