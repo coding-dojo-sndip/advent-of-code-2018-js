@@ -1,49 +1,43 @@
-class Elf {
-	constructor(id) {
-		this.position = id
-	}
-
-	currentRecipe(recipes) {
-		return recipes[this.position]
-	}
-
-	moveToNextPosition(recipes) {
-		this.position = (this.position + 1 + this.currentRecipe(recipes)) % recipes.length
-	}
-}
-
 export const part1 = numberOfRecipes => {
-	const recipes = [3, 7]
-	const elves = [new Elf(0), new Elf(1)]
-	while (recipes.length < numberOfRecipes + 10) {
-		recipes.push(...createNewRecipes(elves, recipes))
-		elves.forEach(elf => elf.moveToNextPosition(recipes))
+	let recipeList = [3,7]
+	let positionElves= [0,1]
+
+	while (recipeList.length<numberOfRecipes+10){
+		let newRecipe = recipeList[positionElves[0]]+recipeList[positionElves[1]]
+		let newRecipeList = newRecipe.toString().split('')
+		recipeList.push(...(newRecipeList.map(s => parseInt(s))))
+		positionElves= positionElves.map(position => moveElf(position,recipeList))
 	}
-	return recipes.slice(numberOfRecipes, numberOfRecipes + 10).join('')
+	return recipeList.slice(numberOfRecipes,numberOfRecipes+10).join('')
 }
+
+ const moveElf = (position,recipeList) =>	(position+(recipeList[position]+1))%recipeList.length	
 
 export const part2 = scoreSequence => {
-	const scoreSize = scoreSequence.length
-	const recipes = [3, 7]
-	const elves = [new Elf(0), new Elf(1)]
-	for (;;) {
-		const newRecipes = createNewRecipes(elves, recipes)
-		recipes.push(...newRecipes)
-		elves.forEach(elf => elf.moveToNextPosition(recipes))
-		if (recipes.length > scoreSize) {
-			for (let i = 0; i < newRecipes.length; i += 1) {
-				const end = recipes.length - i
-				const start = end - scoreSize
-				if (recipes.slice(start, end).join('') === scoreSequence) return start
-			}
-		}
+	let recipeList = [3,7]
+	let positionElves= [0,1]
+	let index = -1
+
+	while (index < 0) {
+		let newRecipe = recipeList[positionElves[0]]+recipeList[positionElves[1]]
+		let newRecipeList = newRecipe.toString().split('')
+		recipeList.push(...(newRecipeList.map(s => parseInt(s))))
+		positionElves= positionElves.map(position => moveElf(position,recipeList))
+		index = stop(recipeList, scoreSequence.toString())
 	}
+	return index
 }
 
-const createNewRecipes = (elves, recipes) =>
-	elves
-		.map(elf => elf.currentRecipe(recipes))
-		.reduce((a, b) => a + b)
-		.toString()
-		.split('')
-		.map(s => parseInt(s))
+const stop = (recipeList, inputString) => {
+	let res = -1
+	if (recipeList.length < inputString.length) {
+		return res
+	}
+
+	if (recipeList.slice(recipeList.length - inputString.length, recipeList.length).join('') === inputString) {
+		res = recipeList.length - inputString.length
+	} else if (recipeList.slice(recipeList.length - inputString.length - 1, recipeList.length - 1).join('') === inputString) {
+		res = recipeList.length - inputString.length - 1
+	}
+	return res
+}

@@ -14,11 +14,11 @@ describe('Day 14, part 1', () => {
 		expect(part1(2018)).toBe('5941429882')
 	})
 	test('after 165061 recipes, the scores of the next ten would be 5992684592', () => {
-		expect(part1(165061)).toBe('5992684592')
+		expect(part1(633601)).toBe('5115114101')
 	})
 })
 
-describe.skip('Day 14, part 2', () => {
+describe('Day 14, part 2', () => {
 	test('51589 first appears after 9 recipes', () => {
 		expect(part2('51589')).toBe(9)
 	})
@@ -32,6 +32,6 @@ describe.skip('Day 14, part 2', () => {
 		expect(part2('59414')).toBe(2018)
 	})
 	test('165061 first appears after 20181148 recipes', () => {
-		expect(part2('165061')).toBe(20181148)
+		expect(part2('633601')).toBe(20310465)
 	})
 })
