@@ -4,7 +4,7 @@ export const part1 = numberOfRecipes => {
 
 	while (recipeList.length<numberOfRecipes+10){
 		let newRecipe = recipeList[positionElves[0]]+recipeList[positionElves[1]]
-		let newRecipeList = newRecipe.toString().split('')
+		let newRecipeList = [...(newRecipe.toString())]
 		recipeList.push(...(newRecipeList.map(s => parseInt(s))))
 		positionElves= positionElves.map(position => moveElf(position,recipeList))
 	}
