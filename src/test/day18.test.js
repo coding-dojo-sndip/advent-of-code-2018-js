@@ -5,6 +5,6 @@ describe('Day 18, part 1', () => {
 		expect(part1('src/test/resources/18-0.txt')).toBe(1147)
 	})
 	test('le vrai input donne ??', () => {
-		expect(part1('src/main/resources/18.txt')).toBe(0)
+		expect(part1('src/main/resources/18.txt')).toBe(360720)
 	})
 })
